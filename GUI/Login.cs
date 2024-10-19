@@ -8,9 +8,9 @@ namespace GUI
     {
         public Login()
         {
-            
+
             InitializeComponent();
-           
+
         }
         // textbox
         private void txt_pass_TextChanged(object sender, EventArgs e)
@@ -33,13 +33,13 @@ namespace GUI
         private void txt_name_Click(object sender, EventArgs e)
         {
             txt_name.Text = "";
-            txt_name.ForeColor= Color.Black;
+            txt_name.ForeColor = Color.Black;
         }
 
         private void txt_pass_Click(object sender, EventArgs e)
         {
             txt_pass.Text = "";
-            txt_pass.ForeColor= Color.Black;
+            txt_pass.ForeColor = Color.Black;
         }
 
 
@@ -102,8 +102,8 @@ namespace GUI
                     e.Cancel = true; // Ngăn chặn đóng form
                 }
                 else
-                {               
-                     Application.Exit();
+                {
+                    Application.Exit();
                 }
             }
 
@@ -123,13 +123,13 @@ namespace GUI
             {
 
                 acc.nameUser = txt_name.Text;
-                if(account.CheckPermision(acc)>1)
+                if (account.CheckPermision(acc) > 1)
                 {
                     Main main = new Main();
                     fullname = account.getUserName(acc).ToString();
                     main.Show();
                     this.Hide();
-                } 
+                }
                 else
                 {
                     MainChoUser_GUI mcu = new MainChoUser_GUI();
@@ -138,7 +138,7 @@ namespace GUI
                     mcu.Show();
                     this.Hide();
                 }
-                
+
             }
             else
             {
@@ -147,6 +147,11 @@ namespace GUI
         }
 
         private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }

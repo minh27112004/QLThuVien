@@ -1,5 +1,4 @@
-﻿CREATE DATABASE Thu_Vien_EAUT_Latest3;
-GO
+﻿
 
 --drop database Thu_Vien_EAUT_Latest3
 USE Thu_Vien_EAUT_Latest3;
@@ -50,8 +49,8 @@ CREATE TABLE DBO.NHA_XUAT_BAN
 
 INSERT INTO DBO.NHA_XUAT_BAN VALUES 
 ('XB001',N'abc')
-select COUNT(*) from MUON_TRA where MaSach = 'MS002'
-select * from MUON_TRA
+--select COUNT(*) from MUON_TRA where MaSach = 'MS002'
+--select * from MUON_TRA
 CREATE TABLE DBO.SACH
 (
 	MaSach char(20) PRIMARY KEY,
@@ -69,7 +68,7 @@ CREATE TABLE DBO.SACH
 	Ton_Kho char(10)
 )
 
-select * from dbo.CHI_TIET_MUON_TRA
+--select * from dbo.CHI_TIET_MUON_TRA
 select * from SACH
 SELECT So_Luong, Da_Muon,( CONVERT(int,So_Luong) - CONVERT(INT,Da_Muon)) FROM DBO.SACH WHERE MaSach = 'MS002'
 
@@ -137,7 +136,7 @@ create table CHI_TIET_MUON_TRA
 	Da_tra Nvarchar(10),
 	Soluong int
 );
-select * from CHI where Ma_MT = 'MT002'
+/*select * from CHI where Ma_MT = 'MT002'
 delete from MUON_TRA where Ma_MT = 'MT002'
 Update SACH set Da_Muon = Da_Muon - 6 , Ton_Kho =  Ton_Kho + 6 where MaSach = 'MS002'
 select * from CHI_TIET_MUON_TRA 
@@ -145,7 +144,7 @@ select * from CHI_TIET_MUON_TRA
 
 delete from MUON_TRA where Ma_MT = 'MT003'
 
-select count(*) from MUON_TRA
+select count(*) from MUON_TRA*/
 INSERT INTO DBO.MUON_TRA VALUES
 ('MT001','KH001',N'Nguyễn Văn Hiếu','IT8','077777','NV001', N'Nhân viên Hiếu',1)
 
@@ -267,7 +266,7 @@ AS
 BEGIN 
 	INSERT INTO DOC_GIA (Ma_DG , Ten_DG, Lop, So_DT , Ten_TK) VALUES (@madg, @tendg , @lop, @sdt, @tendn)
 END
-drop procedu
+
 CREATE PROCEDURE autoID
 	@tableName varchar(30),
 	@idColumn varchar(20)

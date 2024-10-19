@@ -9,7 +9,7 @@ namespace DAL
 {
     public class ConnectToSql
     {
-        string strCon = @"Data Source=LAPTOP-6CACHH1K;Initial Catalog=Thu_Vien_EAUT_Latest3;Integrated Security=True";
+        string strCon = "Data Source=DESKTOP-CHJGDDR\\SQLEXPRESS;Initial Catalog=Thu_Vien_EAUT_Latest3;Integrated Security=True;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public SqlConnection sqlCon = null;
 
         public void openConnection()

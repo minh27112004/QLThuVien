@@ -13,6 +13,7 @@ using DAL;
 using BLL;
 using DTO;
 using OfficeOpenXml;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace GUI
 {
@@ -25,7 +26,7 @@ namespace GUI
 
         private void btn_Report_Click(object sender, EventArgs e)
         {
-            if(cb_BorrowBook.Checked)
+            if (cb_BorrowBook.Checked)
             {
                 lv_Report.Visible = true;
                 lv_Acc.Visible = false;
@@ -46,7 +47,7 @@ namespace GUI
                 int countSum = lv_Report.Items.Count;
                 lbl_SumNumber.Text = "Tổng số: " + countSum;
             }
-            else if(cb_BookLate.Checked)
+            else if (cb_BookLate.Checked)
             {
                 lv_Report.Visible = true;
                 lv_Acc.Visible = false;
@@ -67,7 +68,7 @@ namespace GUI
                 int countSum = lv_Report.Items.Count;
                 lbl_SumNumber.Text = "Tổng số: " + countSum;
             }
-            else if(cb_Reader.Checked)
+            else if (cb_Reader.Checked)
             {
                 lv_Report.Visible = false;
                 lv_Acc.Visible = true;
@@ -81,7 +82,7 @@ namespace GUI
                     lv_Acc.Items.Add(lsvAcc);
                 }
 
-               
+
                 int countSum = lv_Acc.Items.Count;
                 lbl_SumNumber.Text = "Tổng số: " + countSum;
             }
@@ -115,7 +116,7 @@ namespace GUI
 
         private void Report_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void lv_Acc_SelectedIndexChanged(object sender, EventArgs e)
@@ -125,46 +126,92 @@ namespace GUI
 
         private void btn_ToExcel_Click(object sender, EventArgs e)
         {
-            ExportExcel();
+            if(txtBookName.Text.Length > 0)
+            {
+                ExportExcel();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng nhập tên file excel!");
+            }
         }
         private void ExportExcel()
         {
             try
             {
-                //lvPDF is nothing but the listview control name
-                string[] st = new string[lv_Report.Columns.Count];
-                DirectoryInfo di = new DirectoryInfo(@"E:\Lập trình .NET\Bài tập lớn .Net\");
-                if (di.Exists == false)
-                    di.Create();
-                StreamWriter sw = new StreamWriter(@"E:\Lập trình .NET\Bài tập lớn .Net\" + txtBookName.Text.Trim() + ".xls", false);
-                sw.AutoFlush = true;
-                for (int col = 0; col < lv_Report.Columns.Count; col++)
+                if (cb_BorrowBook.Checked  || cb_BookReturn.Checked  || cb_BookLate.Checked )
                 {
-                    sw.Write("\t" + lv_Report.Columns[col].Text.ToString());
-                }
-
-                int rowIndex = 1;
-                int row = 0;
-                string st1 = "";
-                for (row = 0; row < lv_Report.Items.Count; row++)
-                {
-                    if (rowIndex <= lv_Report.Items.Count)
-                        rowIndex++;
-                    st1 = "\n";
+                    //lvPDF is nothing but the listview control name
+                    string[] st = new string[lv_Report.Columns.Count];
+                    DirectoryInfo di = new DirectoryInfo(@"E:\Lập trình .NET\Bài tập lớn .Net\");
+                    if (di.Exists == false)
+                        di.Create();
+                    StreamWriter sw = new StreamWriter(@"E:\Lập trình .NET\Bài tập lớn .Net\" + txtBookName.Text.Trim() + ".xls", false);
+                    sw.AutoFlush = true;
                     for (int col = 0; col < lv_Report.Columns.Count; col++)
                     {
-                        st1 = st1 + "\t" + "'" + lv_Report.Items[row].SubItems[col].Text.ToString();
+                        sw.Write("\t" + lv_Report.Columns[col].Text.ToString());
                     }
-                    sw.WriteLine(st1);
+
+                    int rowIndex = 1;
+                    int row = 0;
+                    string st1 = "";
+                    for (row = 0; row < lv_Report.Items.Count; row++)
+                    {
+                        if (rowIndex <= lv_Report.Items.Count)
+                            rowIndex++;
+                        st1 = "\n";
+                        for (int col = 0; col < lv_Report.Columns.Count; col++)
+                        {
+                            st1 = st1 + "\t" + "'" + lv_Report.Items[row].SubItems[col].Text.ToString();
+                        }
+                        sw.WriteLine(st1);
+                    }
+                    sw.Close();
+                    FileInfo fil = new FileInfo(@"E:\Lập trình .NET\Bài tập lớn .Net\" + txtBookName.Text.Trim() + ".xls");
+                    if (fil.Exists == true)
+                        MessageBox.Show("Xuất file thành công!\nĐường dẫn file: E:\\Lập trình .NET\\Bài tập lớn .Net\\" + txtBookName.Text.Trim() + ".xls ", "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                sw.Close();
-                FileInfo fil = new FileInfo(@"E:\Lập trình .NET\Bài tập lớn .Net\" + txtBookName.Text.Trim() + ".xls");
-                if (fil.Exists == true)
-                    MessageBox.Show("Process Completed", "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else if (cb_Reader.Checked )
+                {
+                    //lvPDF is nothing but the listview control name
+                    string[] st = new string[lv_Acc.Columns.Count];
+                    DirectoryInfo di = new DirectoryInfo(@"E:\Lập trình .NET\Bài tập lớn .Net\");
+                    if (di.Exists == false)
+                        di.Create();
+                    StreamWriter sw = new StreamWriter(@"E:\Lập trình .NET\Bài tập lớn .Net\" + txtBookName.Text.Trim() + ".xls", false);
+                    sw.AutoFlush = true;
+                    for (int col = 0; col < lv_Acc.Columns.Count; col++)
+                    {
+                        sw.Write("\t" + lv_Acc.Columns[col].Text.ToString());
+                    }
+
+                    int rowIndex = 1;
+                    int row = 0;
+                    string st1 = "";
+                    for (row = 0; row < lv_Acc.Items.Count; row++)
+                    {
+                        if (rowIndex <= lv_Acc.Items.Count)
+                            rowIndex++;
+                        st1 = "\n";
+                        for (int col = 0; col < lv_Acc.Columns.Count; col++)
+                        {
+                            st1 = st1 + "\t" + "'" + lv_Acc.Items[row].SubItems[col].Text.ToString();
+                        }
+                        sw.WriteLine(st1);
+                    }
+                    sw.Close();
+                    FileInfo fil = new FileInfo(@"E:\Lập trình .NET\Bài tập lớn .Net\" + txtBookName.Text.Trim() + ".xls");
+                    if (fil.Exists == true)
+                        MessageBox.Show("Xuất file thành công!\nĐường dẫn file: E:\\Lập trình .NET\\Bài tập lớn .Net\\" + txtBookName.Text.Trim() + ".xls ", "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Error " + ex);
             }
         }
+
     }
 }
